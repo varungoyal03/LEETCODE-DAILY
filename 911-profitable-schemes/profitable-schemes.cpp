@@ -21,8 +21,8 @@ public:
   
     int profitableSchemes(int N, int minprofit, vector<int>& group, vector<int>& profit) {
         // ALL POSSIIIBEL SUBSET EXPOLE==> TAKE IT OR NOT TAKE
- memset(t,-1,sizeof(t));
-       return  solve(0,N,minprofit,group,profit);
+//  memset(t,-1,sizeof(t));
+//        return  solve(0,N,minprofit,group,profit);
 
 
 
