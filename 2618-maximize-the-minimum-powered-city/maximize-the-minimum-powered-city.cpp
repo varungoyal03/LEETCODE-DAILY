@@ -5,19 +5,12 @@ public:
     bool check(ll mid, vector<int> stations, int r, int k) {
         int n = stations.size();
         ll sum = 0;
-        for (int i = 0; i <= r; i++) { // window till rth not r-1
+        for (int i = 0; i <r; i++) { // 
             sum += stations[i];
         }
-        if (sum < mid) {
-            ll add = mid - sum;// ll add
-            if (k < add)
-                return false;
-            k -= add;
-            stations[r] += add;
-            sum = mid;
-        }
+    
 
-        for (int i = 1; i < n; i++) { //
+        for (int i = 0; i < n; i++) { //
             if (i - r - 1 >= 0)
                 sum -= stations[i - r - 1];
 
