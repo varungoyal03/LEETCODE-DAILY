@@ -58,10 +58,6 @@ public:
                 t[i]=nums[i]+*s.begin();
 
         }
-
-        cout << "\nFinal dp array t: ";
-        for (int x : t) cout << x << " ";
-        cout << "\n";
   return t[0];  }
 
 
