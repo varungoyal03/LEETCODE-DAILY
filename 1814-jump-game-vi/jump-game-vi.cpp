@@ -36,8 +36,8 @@ public:
   return t[0];  }
 
 
-//optimised
-      int maxResult(vector<int>& nums, int k) {
+//optimised nlong
+      int NLOGNmaxResult(vector<int>& nums, int k) {
 
         int n=nums.size();
         t.assign(n,-1);
@@ -60,6 +60,38 @@ public:
         }
   return t[0];  }
 
+
+
+//optimised o(N)
+      int maxResult(vector<int>& nums, int k) {
+
+        int n=nums.size();
+        t.assign(n,-1);
+    //    return solve(0,nums,k);
+        t[n-1]=nums[n-1];
+
+      deque<int >q; //decrsing deque dont use queue ,store indices
+     
+
+        for(int i=n-2;i>=0;i--){
+            
+             int ub= i+k;
+            while(!q.empty() && q.front() >= ub+1 )   // pop indices which won't be ever chosen in the future
+		    {q.pop_front();}
+		
+
+             
+        	while(!q.empty() && t[q.back()] <= t[i+1] )   // pop indices which won't be ever chosen in the future
+		    {q.pop_back();}
+
+		        q.push_back(i+1);  
+              
+
+             
+                t[i]=nums[i]+t[q.front()];//
+
+        }
+  return t[0];  }
 
 
 
