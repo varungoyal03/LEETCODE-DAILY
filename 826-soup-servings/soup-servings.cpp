@@ -1,8 +1,8 @@
 class Solution {
 public:
 
-     vector<vector<int>> serves={{100, 0}, {75, 25}, {50, 50}, {25, 75}};
-
+    //  vector<vector<int>> serves={{100, 0}, {75, 25}, {50, 50}, {25, 75}};
+ vector<vector<int>> serves={{4, 0}, {3, 1}, {2, 2}, {1, 3}};
     vector<vector<double>> t;
      double solve(int A,int B){
          if(A <= 0 && B <= 0)
@@ -26,6 +26,9 @@ public:
      }
     double soupServings(int n) {
         if(n>=5000) return 1;
+
+ n = (n + 24) / 25;  // integer-only safe version   
+
         t.resize(n+1,vector<double> (n+1,-1.0));
         return solve(n,n);
     }
