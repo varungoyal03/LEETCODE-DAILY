@@ -12,6 +12,8 @@ vector<int> t;
 
         return t[n]=ans;
     }
+
+
     int numSquares(int n) {
         t.assign(n+1,-1);
 
@@ -23,11 +25,11 @@ vector<int> t;
         for(int i=1;i<=n;i++){
             
             int ans=INT_MAX;
-        for(int i=1;i*i<=n;i++){
-           ans=min(ans,1+ solve(n-i*i));
+        for(int j=1;j*j<=i;j++){//
+           ans=min(ans,1+ t[i-j*j] );//
         }
 
-         t[n]=ans;
+         t[i]=ans;
         }
    return t[n]; }
 };
