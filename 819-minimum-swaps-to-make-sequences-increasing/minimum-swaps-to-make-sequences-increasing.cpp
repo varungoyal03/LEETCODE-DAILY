@@ -3,7 +3,7 @@ public:
 int n;
   vector<vector<int>> t;
 
-    int solve(int i,bool  prevSwapped,vector<int>& nums1, vector<int>& nums2){
+    inline int solve(int i,bool  prevSwapped,vector<int>& nums1, vector<int>& nums2){
         if(i==n) return 0;
         if(t[i][prevSwapped]!=-1) return t[i][prevSwapped];
 
@@ -27,5 +27,8 @@ int n;
          n=nums1.size();
      t.assign(n+1,vector<int>(2,-1));
        return solve(0,false,nums1,nums2);
+
+
+
     }
 };
