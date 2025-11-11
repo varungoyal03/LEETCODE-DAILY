@@ -3,7 +3,7 @@ public:
 int n;
   vector<vector<int>> t;
 
-    inline int solve(int i,bool  prevSwapped,vector<int>& nums1, vector<int>& nums2){
+   int solve(int i,bool  prevSwapped,vector<int>& nums1, vector<int>& nums2){
         if(i==n) return 0;
         if(t[i][prevSwapped]!=-1) return t[i][prevSwapped];
 
@@ -25,9 +25,41 @@ int n;
     }
     int minSwap(vector<int>& nums1, vector<int>& nums2) {
          n=nums1.size();
-     t.assign(n+1,vector<int>(2,-1));
-       return solve(0,false,nums1,nums2);
+    //  t.assign(n+1,vector<int>(2,-1));
+    //    return solve(0,false,nums1,nums2);
 
+    //bottom up
+    //  t.assign(n+1,vector<int>(2,0));
+
+//space optmised
+  vector<int> curr(2, 0), ahead(2, 0);
+
+        for(int i=n-1;i>=0;i--){
+            for(int prevSwapped=0;prevSwapped<=1;prevSwapped++){
+
+
+
+        int prev1=-1,prev2=-1;
+        if(i>0)  { prev1=nums1[i-1]; prev2=nums2[i-1];}
+         if (prevSwapped) swap(prev1, prev2); //
+
+        int ans=INT_MAX;
+        // Option 1: no swap at i (valid only if strictly increasing)
+        if (nums1[i] > prev1 && nums2[i] > prev2)
+            ans = ahead[false];
+
+        // Option 2: swap at i (valid only if after swapping it stays increasing)
+        if (nums1[i] > prev2 && nums2[i] > prev1)
+            ans=min(ans,1 + ahead[ true])  ;//
+
+            curr[prevSwapped]=ans;
+
+
+            }
+            ahead=curr;
+        }
+
+return ahead[false];
 
 
     }
