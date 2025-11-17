@@ -10,12 +10,13 @@ public:
                 }
        int  ans=n;
 
-        for(int i=0;i<temp.size();i++){//
-            int x=temp[i]; //
-           int index= upper_bound(temp.begin(),temp.end(),x+n-1)-temp.begin();  //temp
-           int elemntsInRange=index-i;
-         
-       
+int r=0;
+        for(int l=0;l<temp.size();l++){//
+        int x=temp[l];
+
+         while(r<temp.size() && temp[r]<=x+n-1) r++;
+            int elemntsInRange=r-l;
+
             ans=min(ans,n-elemntsInRange);
            
         }
