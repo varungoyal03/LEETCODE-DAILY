@@ -15,7 +15,7 @@ public:
               freq2[ch - 'a']++;
         }
 
-            for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i++) {
             if ((freq1[i]&& !freq2[i] ) || ( !freq1[i]  && freq2[i])) {
                 return false;
             }
@@ -25,13 +25,10 @@ public:
         sort(freq1.begin(), freq1.end());
         sort(freq2.begin(), freq2.end());
 
-              for (int i = 0; i < 26; i++) {
-            if (freq1[i] != freq2[i]) {
-                return false;
-            }
-        }
+   
+        
 
-return true;
+return freq1==freq2;
     }
 };
 
