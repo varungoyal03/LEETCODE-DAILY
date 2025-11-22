@@ -1,0 +1,1 @@
+<h2>find-minimum-operations-to-make-all-elements-divisible-by-three Notes</h2><hr>[ Time taken: 1 d 15 hrs 7 m 16 s ]
