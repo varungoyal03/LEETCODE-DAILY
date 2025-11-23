@@ -29,8 +29,12 @@ typedef pair<int,int> PII;
 
                     if(x<0 || y<0 || x>=m || y>=n) continue;
 
-                    if(grid[x][y] && !newPower) continue;
-                    if(grid[x][y]) newPower--;
+                    // obstacle
+                    if (grid[x][y] == 1) {
+                        if (newPower == 0) continue;
+                        newPower--;
+                    }
+                    
                     if(visited[x][y] >= newPower ) continue;
 
                     if(x==m-1 && y==n-1) return level+1;
