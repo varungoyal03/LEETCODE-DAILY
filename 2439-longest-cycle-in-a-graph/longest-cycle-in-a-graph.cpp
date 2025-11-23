@@ -39,9 +39,12 @@ public:
 
         int len=1;
      int j=edges[i];
+       indegree[j]=0;//proccesed
+
         while(j!=i){
-            indegree[j]=0;//proccesed
+          
             j=edges[j];
+            indegree[j]=0;//proccesed
             len++;
           
         }
