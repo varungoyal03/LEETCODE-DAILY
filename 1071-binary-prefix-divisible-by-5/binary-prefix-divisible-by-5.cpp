@@ -5,8 +5,9 @@ public:
         int x = 0;
 
         for(int bit : nums) {
-            x = (  (x<<1) + bit) % 5;
-            ans.push_back(x == 0);
+            int newr = (  (x<<1)%5 + bit) % 5;
+            ans.push_back(newr == 0);
+            x=newr;
         }
         return ans;
     }  
