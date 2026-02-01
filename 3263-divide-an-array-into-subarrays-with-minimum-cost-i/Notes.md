@@ -1,0 +1,1 @@
+<h2>divide-an-array-into-subarrays-with-minimum-cost-i Notes</h2><hr>[ Time taken: 1 d 3 hrs 17 m 53 s ]
