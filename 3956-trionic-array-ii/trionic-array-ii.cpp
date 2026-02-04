@@ -1,60 +1,51 @@
 class Solution {
 public:
-    typedef long long ll;
-    int n;
-    vector<vector<ll>> memo;
 
-    ll solve(int i, int trend, vector<int>& nums) {
+    long long maxSumTrionic(vector<int>& nums) {
+       int  n = nums.size();
 
-        if(memo[i][trend] != LLONG_MIN) {
-            return memo[i][trend];
-        }
 
-        ll take = LLONG_MIN/2;
-        ll skip = LLONG_MIN/2;
+    const long long NEG = LLONG_MIN / 2;
 
-        //skip
-        if(trend == 0 && i+1<n){
-            skip = solve(i+1, 0, nums);
-        }
+    vector<vector<long long>> dp(n + 1, vector<long long>(4, NEG));
 
-        //i am at trend 3 and i can now end at nums[i]
-        if(trend == 3) {
-            take = nums[i]; //finish it here
-        }
+    // base case
+    // dp[n-1][3] = max(nums[n-1],0);wrong
 
-        if(i+1 < n) {
+    dp[n-1][3]=nums[n-1];
+    // dp[n-1][0]= dp[n-1][1]=dp[n-1][2]=NEG;
+
+
+
+    for(int i = n - 2; i >= 0; i--) {
             int curr = nums[i];
-            int next = nums[i+1];
 
-            if(trend == 0 && next > curr) {
-                take = max(take, curr + solve(i+1, 1, nums));
-            } else if(trend == 1) {
-                if(next > curr) {
-                    take = max(take, curr + solve(i+1, 1, nums));
-                } else if(next < curr) {
-                    take = max(take, curr + solve(i+1, 2, nums));
-                }
-            } else if(trend == 2) {
-                if(next < curr) {
-                    take = max(take, curr + solve(i+1, 2, nums));
-                } else if(next > curr) {
-                    take = max(take, curr + solve(i+1, 3, nums));
-                }
-            } else if(trend == 3 && next > curr) {
-                take = max(take, curr + solve(i+1, 3, nums));
-            }
-        }
+
+    
+        int next = nums[i+1];
+
         
-        return memo[i][trend] = max(take, skip);
+
+        //0
+        dp[i][0]=dp[i+1][0];//skip
+        if(next>curr) dp[i][0]=max(dp[i][0],curr+dp[i+1][1]);
+
+
+        //1
+        if(next>curr) dp[i][1]=curr+dp[i+1][1];
+        if (next<curr) dp[i][1]=curr+dp[i+1][2];
+
+
+        //2
+        if(next<curr) dp[i][2]=curr+dp[i+1][2];
+        if (next>curr) dp[i][2]=curr+ dp[i+1][3];
+
+        //3
+        dp[i][3]=curr;//stop
+        if(next>curr) dp[i][3]=max(dp[i][3],curr+dp[i+1][3]);
+
     }
 
-    ll maxSumTrionic(vector<int>& nums) {
-        n = nums.size();
-
-        memo.assign(n+1, vector<ll>(4, LLONG_MIN));
-
-        return solve(0, 0, nums); //solve(i, trend = 0)
-    }
+    return dp[0][0];}
 };
 
