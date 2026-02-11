@@ -9,10 +9,10 @@ public:
         hFences.push_back(m);
         vFences.push_back(n);
 
-        set<int> hedges;
+        vector<bool> hedges(m+1,false);
         for (int i = 0; i < hFences.size(); i++) {
             for (int j = 0; j < i; j++) {
-                hedges.insert(hFences[i] - hFences[j]);
+                hedges[hFences[i] - hFences[j]]=1;
             }
         }
 
@@ -20,9 +20,8 @@ public:
         for (int i = 0; i < vFences.size(); i++) {
             for (int j = 0; j < i; j++) {
                 x = vFences[i] - vFences[j];
-                if (hedges.count(x)) {
-                    maxi = max(maxi, x);
-                }
+                
+                if (x<=m && hedges[x])   maxi = max(maxi, x);
             }
         }
 
