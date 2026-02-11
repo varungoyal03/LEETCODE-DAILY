@@ -1,22 +1,38 @@
 class Solution {
 public:
+    // Greedy Solution -> how to fill boat of size 2 effectively, so that we can achieve maximum number of boats.
     int numRescueBoats(vector<int>& people, int limit) {
+
         sort(people.begin(),people.end());
-        int ans = 0;
-        int i = 0, j = people.size()-1;
-        while(i<=j){
-            if(people[i]+people[j]<=limit)
+
+        int n = people.size();
+        
+        int low = 0, high = n-1;
+        int cnt = 0;
+
+        while(low < high)
+        {
+            int sum = people[low] + people[high];
+
+            if(sum <= limit)
             {
-                ans++;
-                i++;
-                j--;
+                cnt++;
+                low++;
+                high--;
             }
             else
             {
-                ans++;
-                j--;
+                cnt++;
+                high--;
             }
         }
-        return ans;
+
+        if(low == high && people[low]<=limit)
+        {
+            cnt++;
+        }
+
+        return cnt;
+  
     }
 };
