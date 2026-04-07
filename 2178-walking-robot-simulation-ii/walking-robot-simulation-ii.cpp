@@ -1,56 +1,42 @@
 class Robot {
 public:
-int w,h;
-int x,y;
-int dir;
-int peri;
-
-        vector<pair<int,int>> directions = {
-            {0, 1}, {1, 0}, {0, -1}, {-1, 0}
-        };
+int w ;
+int h;
+int pos;
+int perimeter;
+bool moved;
 
     Robot(int width, int height) {
-        w=width;
-        h=height;
-        x=y=0;
-        dir=1;
-        peri=2*(w+h-2);
-
-        
+     w=width;
+     h=height;
+      perimeter=2*(w-1)+2*(h-1) ;
+      pos=0; 
+        moved=false;;
     }
     
     void step(int num) {
-        int nx,ny;
-        num%=peri;
-if (num == 0) num = peri;
-        while(num--){
-            nx=x+directions[dir].first;
-            ny=y+directions[dir].second;
-
-            if(nx==w || nx==-1 || ny==h ||ny==-1) {
-                dir=(dir-1+4)%4;
-                num++;
-                continue;
-            }
-
-        x=nx;
-        y=ny;
-
-
-        }
-
-        
+        moved=true;
+        pos=(num+pos)%perimeter;
     }
     
     vector<int> getPos() {
-        return {x,y};
+        if(pos<=w-1) return {pos, 0};
+
+        else if(pos<=w-1+h-1)  return {w-1,pos-(w-1)};
+        else if (pos <= 2 * (w - 1) + h - 1) return {(w - 1) - (pos - (w + h - 2)), h - 1}; 
+        
+        else  return {0, (h - 1) - (pos - (2 * w + h - 3))};
+        
     }
     
     string getDir() {
-         if (dir == 1) return "East";
-        if (dir == 2) return "South";
-        if (dir == 3) return "West";
-        return "North";
+        if(!moved)return "East";
+        if(pos==0) return "South";
+        
+        if(pos<=w-1) return "East";
+        if (pos <= (w - 1) + (h - 1)) return "North";
+        if (pos <= 2 * (w - 1) + (h - 1)) return "West";
+        return "South";
     }
 };
 
