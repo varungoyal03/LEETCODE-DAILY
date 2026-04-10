@@ -1,28 +1,27 @@
 class Solution {
 public:
+    int maximumSwap(int n) {
+        string s = to_string(n);
 
-int maximumSwap(int n) {
-    string s = to_string(n);
+        vector<int> last(10, -1);
 
-    for(int i = 0; i < s.size(); i++){
-        if(s[i] == '9') continue;
+         // FIXED: use s.size()
+        for (int i = 0; i < s.size(); ++i) {
+            last[s[i] - '0'] = i;
+        }
 
-        int maxi = i;
+        for (int i = 0; i < s.size(); i++) {
+            int d = s[i] - '0';
 
-        for(int j = i; j < s.size(); j++){
-            if(s[j] >= s[maxi]){
-                maxi = j;
+            for (int j = 9; j > d; j--) {
+                if (last[j] > i) {
+                    swap(s[i], s[last[j]]);
+                    return stoi(s);
+                }
             }
+
+           
         }
 
-        if(maxi != i && s[maxi] > s[i]){
-            swap(s[i], s[maxi]);
-            break;
-        }
-    }
-
-    return stoi(s);
-}
-};
-
-
+         return n;}
+    };
