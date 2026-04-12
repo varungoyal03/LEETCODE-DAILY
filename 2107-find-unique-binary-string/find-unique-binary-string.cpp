@@ -2,22 +2,18 @@ class Solution {
 public:
     string findDifferentBinaryString(vector<string>& nums) {
         int n=nums.size();
-        int maxn=1<<n;
+        string ans="";
+         
+         for(int i=0;i<n;i++){
 
-      vector<bool> mp(maxn, 0);
+            char diagonalCh=nums[i][i];
 
-        for(auto &s:nums)
-        {
-            int num=stoi(s,0,2);
-            mp[num]=1;
-        }
+            ans+=(diagonalCh=='0'?'1':'0');
 
-        for(int i=0;i<maxn;i++){
-            if(!mp[i]) {
-                string s=bitset<32>(i).to_string();
-                return s.substr(32-n);
-            }
-
-        }
-    return "0";}
+         }
+         
+         return ans;
+         
+         
+         }
 };
