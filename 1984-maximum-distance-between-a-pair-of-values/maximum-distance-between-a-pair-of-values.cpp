@@ -1,20 +1,27 @@
 class Solution {
 public:
-    int maxDistance(vector<int>& nums1, vector<int>& nums2) {
+int maxDistance(vector<int>& nums1, vector<int>& nums2) {
+    int maxDist = 0;
+    int n = nums1.size(), m = nums2.size();
 
-        int n1=nums1.size(); int n2=nums2.size();
+    for (int i = 0; i < n; i++) {
+        int low = i, high = m - 1;
+        int bestJ = -1;
 
-    int  j = 0;
-    int ans=0;
-
-
-        for(int i=0;i<n1;i++){
-            while(j<n2 && nums2[j]>=nums1[i]) j++;
-
-            if(j>=i) ans=max(ans,j-i-1); 
-
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (nums2[mid] >= nums1[i]) {
+                bestJ = mid;
+                low = mid + 1; // Try to find a larger j to the right
+            } else {
+                high = mid - 1; // nums2[mid] is too small, look left
+            }
         }
 
-return ans;
+        if (bestJ != -1) {
+            maxDist = max(maxDist, bestJ - i);
+        }
     }
+    return maxDist;
+}
 };
