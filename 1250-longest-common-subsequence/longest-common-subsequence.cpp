@@ -1,52 +1,28 @@
 class Solution {
 public:
-    int find(int i, int j, string& s1, string& s2, vector<vector<int>>& dp) {
-        if (i < 0 || j < 0)
-        
-        if (dp[i][j] != -1)
-            return dp[i][j];
+    int longestCommonSubsequence(string s1, string s2) {
+         int n = s1.size();
+    int m = s2.size();
 
-        if (s1[i] == s2[j])
-            return  dp[i][j]=1 + find(i - 1, j - 1, s1, s2, dp);
+    // dp table size [n+1][m+1] initialized to 0.
+    // The n-th row and m-th column are our '0' base cases!
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
 
-        return dp[i][j] =
-                   max(find(i, j - 1, s1, s2, dp), find(i - 1, j, s1, s2, dp));
-    }
-    int longestCommonSubsequenceTABULATION(string s1, string s2) {
-        int n = s1.size();
-        int m = s2.size();
-        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-
-                if (s1[i] == s2[j])
-                    dp[i+1][j+1] = 1 + dp[i][j ];
-                else    
-                dp[i+1][j+1] = max(dp[i+1][j ], dp[i ][j+1]);
+    // Loop backwards: Because solve(i) needs solve(i+1)
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = m - 1; j >= 0; j--) {
+            
+            // EXACT copy-paste from recursion
+            if (s1[i] == s2[j]) {
+                dp[i][j] = 1 + dp[i + 1][j + 1];
+            } else {
+                dp[i][j] = max(dp[i + 1][j], dp[i][j + 1]);
             }
+            
         }
-       return dp[n][m];
-
     }
 
-        int longestCommonSubsequence(string s1, string s2) {
-        int n = s1.size();
-        int m = s2.size();
-         vector<int>  curr(m+1, 0);
-         vector<int>  prev(m+1, 0);
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-
-                if (s1[i] == s2[j])
-                    curr[j+1] = 1 + prev[j];
-                else    
-                curr[j+1] = max(curr[j ], prev[j+1]);
-            }
-            prev=curr;
-        }
-       return prev[m];
-
+    // Since we looped down to 0, the final answer sits at the starting indices
+    return dp[0][0];
     }
 };
