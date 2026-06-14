@@ -1,66 +1,55 @@
+
+
 class Solution {
-public:
-int n;
-  vector<vector<int>> t;
+    vector<vector<int>> dp;
 
-   int solve(int i,bool  prevSwapped,vector<int>& nums1, vector<int>& nums2){
-        if(i==n) return 0;
-        if(t[i][prevSwapped]!=-1) return t[i][prevSwapped];
-
-        int prev1=-1,prev2=-1;
-        if(i>0)  { prev1=nums1[i-1]; prev2=nums2[i-1];}
-         if (prevSwapped) swap(prev1, prev2); //
-
-        int ans=INT_MAX;
-        // Option 1: no swap at i (valid only if strictly increasing)
-        if (nums1[i] > prev1 && nums2[i] > prev2)
-            ans = solve(i + 1, false,nums1,nums2);
-
-        // Option 2: swap at i (valid only if after swapping it stays increasing)
-        if (nums1[i] > prev2 && nums2[i] > prev1)
-            ans=min(ans,1 + solve( i + 1, true,nums1,nums2))  ;//
-
-           return t[i][prevSwapped]=ans;
-        
-    }
-    int minSwap(vector<int>& nums1, vector<int>& nums2) {
-         n=nums1.size();
-    //  t.assign(n+1,vector<int>(2,-1));
-    //    return solve(0,false,nums1,nums2);
-
-    //bottom up
-    //  t.assign(n+1,vector<int>(2,0));
-
-//space optmised
-  vector<int> curr(2, 0), ahead(2, 0);
-
-        for(int i=n-1;i>=0;i--){
-            for(int prevSwapped=0;prevSwapped<=1;prevSwapped++){
-
-
-
-        int prev1=-1,prev2=-1;
-        if(i>0)  { prev1=nums1[i-1]; prev2=nums2[i-1];}
-         if (prevSwapped) swap(prev1, prev2); //
-
-        int ans=INT_MAX;
-        // Option 1: no swap at i (valid only if strictly increasing)
-        if (nums1[i] > prev1 && nums2[i] > prev2)
-            ans = ahead[false];
-
-        // Option 2: swap at i (valid only if after swapping it stays increasing)
-        if (nums1[i] > prev2 && nums2[i] > prev1)
-            ans=min(ans,1 + ahead[ true])  ;//
-
-            curr[prevSwapped]=ans;
-
-
-            }
-            ahead=curr;
+    // This function now STRICTLY handles i >= 1
+    int solveRec(int i, int swapped, vector<int>& nums1, vector<int>& nums2) {
+        // 1. BASE CASE
+        if (i == nums1.size()) {
+            return 0;
         }
 
-return ahead[false];
+        // 2. MEMO CHECK
+        if (dp[i][swapped] != -1) {
+            return dp[i][swapped];
+        }
 
+        int minSwaps = 1e9; // Start with infinity
 
+        // 3. FIGURE OUT YESTERDAY (Clean and exact!)
+        // Because i is guaranteed to be >= 1, we can just directly access i - 1.
+        int prev1 = swapped ? nums2[i - 1] : nums1[i - 1];
+        int prev2 = swapped ? nums1[i - 1] : nums2[i - 1];
+
+        // 4. CHOICE 1: KEEP (Do not swap today)
+        if (nums1[i] > prev1 && nums2[i] > prev2) {
+            minSwaps = min(minSwaps, solveRec(i + 1, 0, nums1, nums2));
+        }
+
+        // 5. CHOICE 2: SWAP (Swap today)
+        if (nums2[i] > prev1 && nums1[i] > prev2) {
+            // Add 1 because we are performing a swap
+            minSwaps = min(minSwaps, 1 + solveRec(i + 1, 1, nums1, nums2));
+        }
+
+        return dp[i][swapped] = minSwaps;
+    }
+
+public:
+    int minSwap(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        dp.assign(n, vector<int>(2, -1));
+        
+        // --- EXPLICITLY HANDLE INDEX 0 HERE ---
+        
+        // Option A: Do NOT swap at index 0. Cost is 0. Move to index 1.
+        int keep_at_zero = solveRec(1, 0, nums1, nums2);
+        
+        // Option B: DO swap at index 0. Cost is 1. Move to index 1.
+        int swap_at_zero = 1 + solveRec(1, 1, nums1, nums2);
+        
+        // Return the absolute best of the two branching realities
+        return min(keep_at_zero, swap_at_zero);
     }
 };
