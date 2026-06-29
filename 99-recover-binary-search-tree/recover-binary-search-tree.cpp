@@ -10,28 +10,28 @@
  * };
  */
 class Solution {
-public:
-TreeNode* first;
-    TreeNode* middle;
-    TreeNode* last;
+public:TreeNode* first;
+    TreeNode* second;
     TreeNode* prev;
-void inorder(TreeNode* root) {
+
+    void inorder(TreeNode* root) {
         if (!root) return;
 
         // 1. Go Left
         inorder(root->left);
 
         // 2. Process Current Node: Look for the Glitch!
-        if (prev != NULL && root->val < prev->val) {
+        // (A glitch is when the previous number is strictly greater than the current number)
+        if (prev != NULL && prev->val > root->val) {
             
-            // If this is the FIRST violation we've seen:
+            // If this is the VERY FIRST violation:
             if (first == NULL) {
                 first = prev;
-                middle = root;
+                second = root; // Tentatively assume they are adjacent
             } 
-            // If this is the SECOND violation we've seen:
+            // If this is the SECOND violation:
             else {
-                last = root;
+                second = root; // Overwrite our assumption with the distant node
             }
         }
         
@@ -42,20 +42,17 @@ void inorder(TreeNode* root) {
         inorder(root->right);
     }
 
+public:
     void recoverTree(TreeNode* root) {
         // Reset pointers for multiple test cases
-        first = middle = last = prev = NULL;
+        first = second = prev = NULL;
 
         // Traverse the tree to find the culprits
         inorder(root);
 
-        // Scenario 2: Distant nodes were swapped
-        if (first != NULL && last != NULL) {
-            swap(first->val, last->val);
-        } 
-        // Scenario 1: Adjacent nodes were swapped
-        else if (first != NULL && middle != NULL) {
-            swap(first->val, middle->val);
+        // Swap the values to restore the BST
+        if (first != NULL && second != NULL) {
+            swap(first->val, second->val);
         }
     }
     
