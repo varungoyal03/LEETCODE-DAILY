@@ -1,48 +1,49 @@
 class Solution {
 public:
     int candy(vector<int>& ratings) {
-        //no contraint at equalt ratings
-
-      int n = ratings.size();
-        vector<int> adj[n];
-        vector<int> deg(n, 0);
-        vector<int> dist(n, 1);//candies
-
-        for (int i = 0; i < n; i++) {
-            // Check left neighbor
-            if (i > 0 && ratings[i] > ratings[i-1]) {
-                adj[i-1].push_back(i);
-                deg[i]++;
+        int n = ratings.size();
+        
+        // Base case: if array is empty, 0 candies needed
+        if (n == 0) return 0;
+        
+        // The first child gets 1 candy to start
+        int sum = 1; 
+        int i = 1;
+        
+        // Traverse the entire array
+        while (i < n) {
+            
+            // 1. Handle flat terrain (equal ratings)
+            if (ratings[i] == ratings[i - 1]) {
+                sum = sum + 1; 
+                i++; 
+                continue;
             }
-            // Check right neighbor
-            if (i < n - 1 && ratings[i] > ratings[i+1]) {
-                adj[i+1].push_back(i);
-                deg[i]++;
+            
+            // 2. Handle going UP the mountain
+            int peak = 1;
+            while (i < n && ratings[i] > ratings[i - 1]) {
+                peak += 1; 
+                sum += peak; 
+                i++;
             }
-        }
-
-        queue<int> q;
-        for (int i = 0; i < n; i++) {
-            if (deg[i] == 0) q.push(i);
-        }
-        int total=0;
-        while(!q.empty()){
-            int top=q.front(); q.pop();
-            total+=dist[top];
-
-            for(auto v:adj[top]){
-                dist[v]=max(dist[v],dist[top]+1);
-                deg[v]--;
-                  if (deg[v] == 0) q.push(v);
-
-
+            
+            // 3. Handle going DOWN the mountain
+            int down = 1;
+            while (i < n && ratings[i] < ratings[i - 1]) {
+                sum += down; 
+                i++; 
+                down++;
+            }
+            
+            // 4. Fix the collision at the peak
+            // If the downward slope is longer than the upward slope, 
+            // the peak needs extra candies to satisfy the downward rule.
+            if (down > peak) {
+                sum += down - peak;
             }
         }
         
-
-
-    return total;
-
+        return sum;
     }
 };
-
