@@ -7,18 +7,19 @@ typedef long long ll;
 
         vector<int> dp(26, 0);//countEndWith[idx] 
 
-        ll total = 0;
+        ll curr = 1;
 
         for(int i = 0; i < n; i++){
             int chIdx = s[i] - 'a';
 
             // Create new subsequences and remove duplicates
-            int add = (1 + total - dp[chIdx] + MOD) % MOD;
+            ll temp=curr;
+            curr = (curr*2 - dp[chIdx] + MOD) % MOD;
 
-            dp[chIdx]=1 + total ;
-            total = (total + add) % MOD;
+            dp[chIdx]=temp ;
+    
         }
 
-        return total;
+        return (curr-1 +MOD) % MOD;
     }
 };
